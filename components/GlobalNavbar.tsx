@@ -19,7 +19,7 @@ export function GlobalNavbar() {
     }, []);
 
     const getAuthUrl = (path: string) => {
-        const baseUrl = process.env.AUTH_URL || 'http://localhost:3002';
+        const baseUrl = process.env.NEXT_PUBLIC_APP_AUTH_URL || 'http://localhost:3002';
         if (!currentUrl) return `${baseUrl}${path}`;
         return `${baseUrl}${path}?redirect=${encodeURIComponent(currentUrl)}`;
     };
