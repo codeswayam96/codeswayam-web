@@ -7,13 +7,22 @@ export function GlobalNavbar() {
     const [menuOpen, setMenuOpen] = useState(false);
     const [scrolled, setScrolled] = useState(false);
 
+    const [currentUrl, setCurrentUrl] = useState('');
+
     useEffect(() => {
+        setCurrentUrl(window.location.href);
         const handleScroll = () => {
             setScrolled(window.scrollY > 10);
         };
         window.addEventListener('scroll', handleScroll);
         return () => window.removeEventListener('scroll', handleScroll);
     }, []);
+
+    const getAuthUrl = (path: string) => {
+        const baseUrl = process.env.NEXT_PUBLIC_AUTH_URL || 'http://localhost:3002';
+        if (!currentUrl) return `${baseUrl}${path}`;
+        return `${baseUrl}${path}?redirect=${encodeURIComponent(currentUrl)}`;
+    };
 
     return (
         <nav
@@ -42,14 +51,14 @@ export function GlobalNavbar() {
                 {/* CTA */}
                 <div className="hidden md:flex items-center gap-6">
                     <Link
-                        href={`${process.env.NEXT_PUBLIC_AUTH_URL || 'http://localhost:3002'}/login`}
+                        href={getAuthUrl('/login')}
                         className="text-sm font-semibold hover:text-[#00ADB5] transition-colors"
                         style={{ color: '#393E46' }}
                     >
                         Log In
                     </Link>
                     <Link
-                        href={`${process.env.NEXT_PUBLIC_AUTH_URL || 'http://localhost:3002'}/signup`}
+                        href={getAuthUrl('/signup')}
                         className="px-6 py-2.5 rounded-full text-sm font-bold transition-all duration-200 hover:shadow-lg hover:-translate-y-0.5"
                         style={{ backgroundColor: '#222831', color: '#FFFFFF' }}
                     >
@@ -76,7 +85,7 @@ export function GlobalNavbar() {
                     <Link href="/services" onClick={() => setMenuOpen(false)} className="hover:text-[#00ADB5] transition-colors">IT Services</Link>
                     <Link href="/products" onClick={() => setMenuOpen(false)} className="hover:text-[#00ADB5] transition-colors">Our SaaS</Link>
                     <Link href="/blog" onClick={() => setMenuOpen(false)} className="hover:text-[#00ADB5] transition-colors">Blog</Link>
-                    <Link href={`${process.env.NEXT_PUBLIC_AUTH_URL || 'http://localhost:3002'}/signup`} className="px-5 py-3 rounded-xl font-bold text-center mt-2"
+                    <Link href={getAuthUrl('/signup')} className="px-5 py-3 rounded-xl font-bold text-center mt-2"
                         style={{ backgroundColor: '#222831', color: '#FFFFFF' }}>Get Started</Link>
                 </div>
             )}
