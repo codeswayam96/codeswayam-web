@@ -1,0 +1,43 @@
+
+> codeswayam-web@0.1.0 build
+> next build
+
+▲ Next.js 16.1.6 (Turbopack)
+⚠ The "middleware" file convention is deprecated. Please use "proxy" instead. Learn more: https://nextjs.org/docs/messages/middleware-to-proxy
+- Environments: .env.local, .env
+
+  Creating an optimized production build ...
+✓ Compiled successfully in 22.6s
+  Running TypeScript ...
+  Collecting page data using 7 workers ...
+  Generating static pages using 7 workers (0/15) ...
+  Generating static pages using 7 workers (3/15) 
+(node:20104) [DEP0169] DeprecationWarning: `url.parse()` behavior is not standardized and prone to errors that have security implications. Use the WHATWG URL API instead. CVEs are not issued for `url.parse()` vulnerabilities.
+(Use `node --trace-deprecation ...` to show where the warning was created)
+  Generating static pages using 7 workers (7/15) 
+  Generating static pages using 7 workers (11/15) 
+✓ Generating static pages using 7 workers (15/15) in 2.5s
+  Finalizing page optimization ...
+
+Route (app)
+┌ ○ /
+├ ○ /_not-found
+├ ○ /about
+├ ○ /blog
+├ ƒ /blog/[saas-name]/[slug]
+├ ○ /contact-us
+├ ○ /delivery-policy
+├ ○ /privacy-policy
+├ ○ /products
+├ ○ /refund-policy
+├ ○ /robots.txt
+├ ○ /services
+├ ○ /sitemap.xml
+└ ○ /terms-and-conditions
+
+
+ƒ Proxy (Middleware)
+
+○  (Static)   prerendered as static content
+ƒ  (Dynamic)  server-rendered on demand
+

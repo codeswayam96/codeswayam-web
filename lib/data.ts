@@ -30,7 +30,10 @@ import axios from 'axios';
 export async function getSaasProducts(): Promise<SaaSProduct[]> {
     try {
         const response = await axios.get(`${process.env.NEXT_PUBLIC_API_URL}/saas-products`);
-        return response.data;
+        const data = response.data;
+        if (Array.isArray(data)) return data;
+        if (data && Array.isArray(data.data)) return data.data;
+        return [];
     } catch (e) {
         console.error(e);
         return []; // Fallback
@@ -41,7 +44,10 @@ export async function getSaasProducts(): Promise<SaaSProduct[]> {
 export async function getBlogPosts(): Promise<BlogPost[]> {
     try {
         const response = await axios.get(`${process.env.NEXT_PUBLIC_API_URL}/blogs`);
-        return response.data;
+        const data = response.data;
+        if (Array.isArray(data)) return data;
+        if (data && Array.isArray(data.data)) return data.data;
+        return [];
     } catch (e) {
         console.error(e);
         return []; // Fallback
