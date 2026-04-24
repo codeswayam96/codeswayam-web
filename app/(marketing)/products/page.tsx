@@ -1,64 +1,141 @@
 import type { Metadata } from 'next';
+import { getSaasProducts } from '@/lib/data';
+import { ArrowUpRight, Zap, Globe, Shield, Sparkles } from 'lucide-react';
+import Link from 'next/link';
 
 export const metadata: Metadata = {
-    title: 'SaaS Products | Code Swayam',
-    description: 'Explore Auraflow, ChatLift, MailTracker and our full portfolio of SaaS products hosted on subdomains.',
+    title: 'Software Ecosystem | Code Swayam',
+    description: 'Explore our portfolio of high-performance SaaS applications and digital growth tools.',
 };
 
-import { getSaasProducts } from '@/lib/data';
-
 export default async function ProductsPage() {
-    const products = await getSaasProducts();
+    const allProducts = await getSaasProducts();
+
+    // Group by tag and pick the best one (Live > Beta > Soon)
+    const products = Object.values(
+        allProducts.reduce((acc, p) => {
+            const tag = p.tag;
+            const current = acc[tag];
+            const getPriority = (status: string) => status === 'Live' ? 3 : status === 'Beta' ? 2 : 1;
+            
+            if (!current || getPriority(p.status) > getPriority(current.status)) {
+                acc[tag] = p;
+            }
+            return acc;
+        }, {} as Record<string, any>)
+    ).sort((a: any, b: any) => {
+        const getPriority = (status: string) => status === 'Live' ? 3 : status === 'Beta' ? 2 : 1;
+        if (getPriority(b.status) !== getPriority(a.status)) {
+            return getPriority(b.status) - getPriority(a.status);
+        }
+        return a.name.localeCompare(b.name);
+    });
+
     return (
-        <div style={{ backgroundColor: '#FFFFFF', color: '#111827' }}>
-            {/* Header */}
-            <section className="relative overflow-hidden bg-gray-50 py-28 border-b border-gray-100">
-                <div className="absolute inset-0 pointer-events-none flex justify-center pb-32" aria-hidden>
-                    <div className="w-[600px] h-[300px] opacity-10 blur-[100px]"
-                        style={{ background: '#00ADB5' }} />
-                </div>
-                <div className="relative max-w-5xl mx-auto px-6 text-center">
-                    <div className="text-xs font-bold uppercase tracking-widest mb-4" style={{ color: '#00ADB5' }}>SaaS Portfolio</div>
-                    <h1 className="text-5xl font-bold tracking-tight mb-6 text-black">
-                        The Code Swayam Ecosystem
+        <div className="bg-background text-foreground selection:bg-primary/20 selection:text-primary pt-32 pb-24">
+            {/* 1. EDITORIAL HEADER */}
+            <section className="px-6 mb-24 md:mb-40">
+                <div className="max-w-7xl mx-auto">
+                    <div className="flex justify-center mb-10 animate-reveal">
+                        <div className="flex items-center gap-3">
+                            <span className="w-8 h-[1px] bg-primary"></span>
+                            <span className="text-[12px] font-black uppercase tracking-[0.3em] text-primary">SaaS Ecosystem</span>
+                            <span className="w-8 h-[1px] bg-primary"></span>
+                        </div>
+                    </div>
+                    
+                    <h1 className="text-6xl md:text-[9rem] font-display font-bold leading-[0.85] tracking-tight text-center uppercase mb-12">
+                        Digital <br />
+                        <span className="text-transparent [-webkit-text-stroke:1px_hsl(var(--primary))]">Inventory.</span>
                     </h1>
-                    <p className="text-xl max-w-2xl mx-auto text-gray-500">
-                        A unified suite of 20+ independent SaaS products. <br />Pick the specific tools your business needs to grow.
+                    
+                    <p className="max-w-2xl mx-auto text-center text-xl md:text-2xl font-display font-medium text-muted-foreground leading-tight">
+                        A unified suite of high-performance tools engineered for the modern era. 
+                        Each product is an independent ecosystem connected by a single identity.
                     </p>
                 </div>
             </section>
 
-            {/* Products Grid */}
-            <section className="max-w-7xl mx-auto px-6 py-24">
-                <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
-                    {products.map((p) => (
-                        <div key={p.name} className="flex flex-col bg-white border border-gray-200 rounded-2xl p-8 hover:shadow-lg hover:-translate-y-1 transition-all duration-300">
-                            <div className="flex items-center justify-between mb-6">
-                                <span className="text-xs font-bold px-3 py-1 rounded-full bg-gray-100 text-gray-600">
-                                    {p.tag}
-                                </span>
-                                <span className={`text-xs font-bold px-2 py-1 rounded-full ${p.status === 'Live' ? 'bg-green-50 text-green-600' : p.status === 'Beta' ? 'bg-yellow-50 text-yellow-600' : 'bg-gray-50 text-gray-400'}`}>
-                                    {p.status}
-                                </span>
+            {/* 2. PRODUCT GRID (Editorial Style) */}
+            <section className="px-6">
+                <div className="max-w-7xl mx-auto">
+                    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                        {products.map((p, i) => (
+                            <div key={p.id} className="group relative bg-secondary/30 rounded-[2.5rem] border border-border p-10 flex flex-col justify-between hover:border-primary transition-all duration-500 premium-shadow h-[500px] overflow-hidden">
+                                {/* Product Icon/Symbol */}
+                                <div className="absolute top-0 right-0 p-8 opacity-5 group-hover:opacity-10 transition-opacity translate-x-4 -translate-y-4">
+                                    <Sparkles className="w-40 h-40" />
+                                </div>
+
+                                <div>
+                                    <div className="flex items-center justify-between mb-8">
+                                        <div className="w-14 h-14 rounded-2xl bg-primary/10 flex items-center justify-center text-primary group-hover:bg-primary group-hover:text-primary-foreground transition-all duration-500">
+                                            {i % 3 === 0 ? <Zap className="w-7 h-7" /> : i % 3 === 1 ? <Globe className="w-7 h-7" /> : <Shield className="w-7 h-7" />}
+                                        </div>
+                                        <div className="flex gap-2">
+                                            <span className="px-3 py-1 rounded-full bg-background border border-border text-[9px] font-black uppercase tracking-widest text-muted-foreground">
+                                                {p.tag}
+                                            </span>
+                                            <span className={`px-3 py-1 rounded-full text-[9px] font-black uppercase tracking-widest ${p.status === 'Live' ? 'bg-primary text-primary-foreground' : 'bg-muted text-muted-foreground'}`}>
+                                                {p.status}
+                                            </span>
+                                        </div>
+                                    </div>
+
+                                    <h3 className="text-4xl font-display font-bold tracking-tight mb-6">
+                                        {p.name}
+                                    </h3>
+                                    
+                                    <p className="text-lg font-medium text-muted-foreground leading-tight line-clamp-4">
+                                        {p.description}
+                                    </p>
+                                </div>
+
+                                <div className="mt-auto">
+                                    <div className="pt-8 border-t border-border flex justify-between items-end">
+                                        <div className="flex flex-col gap-1">
+                                            <span className="text-[10px] font-black uppercase tracking-widest text-muted-foreground">Domain</span>
+                                            <span className="text-xs font-bold text-foreground">{p.domain}</span>
+                                        </div>
+                                        <Link 
+                                            href={`https://${p.domain}`} 
+                                            target="_blank"
+                                            className="w-12 h-12 rounded-full bg-background border border-border flex items-center justify-center hover:bg-primary hover:text-primary-foreground hover:border-primary transition-all duration-300"
+                                        >
+                                            <ArrowUpRight className="w-5 h-5" />
+                                        </Link>
+                                    </div>
+                                </div>
                             </div>
-                            <h3 className="text-2xl font-bold mb-3 text-black">{p.name}</h3>
-                            <p className="text-sm leading-relaxed mb-8 flex-1 text-gray-500">
-                                {p.description}
-                            </p>
-                            {p.status !== 'Soon' ? (
-                                <a href={`https://${p.domain}`} target="_blank" rel="noopener noreferrer"
-                                    className="inline-flex justify-center w-full py-3 rounded-lg border border-gray-200 text-sm font-bold text-gray-700 hover:bg-gray-50 transition-colors">
-                                    Launch App &rarr;
-                                </a>
-                            ) : (
-                                <span className="w-full py-3 text-center text-sm font-semibold text-gray-400 bg-gray-50 rounded-lg">
-                                    In Development
-                                </span>
-                            )}
-                        </div>
-                    ))}
+                        ))}
+                    </div>
+                </div>
+            </section>
+
+            {/* 3. CTA FOOTER SECTION */}
+            <section className="px-6 py-40">
+                <div className="max-w-5xl mx-auto bg-primary rounded-[3.5rem] p-12 md:p-24 text-center relative overflow-hidden">
+                    <div className="absolute inset-0 bg-[radial-gradient(circle_at_top_right,white_0%,transparent_30%)] opacity-20" />
+                    
+                    <h2 className="text-5xl md:text-8xl font-display font-bold tracking-tight text-primary-foreground leading-none mb-12 uppercase relative z-10">
+                        Scale with <br />CodeSwayam.
+                    </h2>
+                    
+                    <p className="text-xl md:text-2xl font-display font-medium text-primary-foreground/80 mb-16 max-w-2xl mx-auto relative z-10">
+                        Join the ecosystem used by high-performance teams worldwide. 
+                        One identity, infinite possibilities.
+                    </p>
+
+                    <Link 
+                        href="https://auth.codeswayam.com/signup" 
+                        className="inline-flex items-center gap-4 bg-primary-foreground text-primary px-12 py-6 rounded-full text-[12px] font-black uppercase tracking-widest hover:scale-105 active:scale-95 transition-all shadow-2xl relative z-10"
+                    >
+                        Create Free Account
+                        <Zap className="w-5 h-5" />
+                    </Link>
                 </div>
             </section>
         </div>
     );
 }
+
