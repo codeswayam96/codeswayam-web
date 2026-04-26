@@ -1,3 +1,5 @@
+
+export const dynamic = "force-dynamic";
 import Link from 'next/link';
 import type { Metadata } from 'next';
 import { ArrowRight, Sparkles, Code, Globe, Zap, ArrowUpRight } from 'lucide-react';

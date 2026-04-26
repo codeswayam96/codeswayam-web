@@ -2,6 +2,8 @@ import type { Metadata } from 'next';
 import { getSaasProducts } from '@/lib/data';
 import { ArrowUpRight, Zap, Globe, Shield, Sparkles } from 'lucide-react';
 import Link from 'next/link';
+export const dynamic = "force-dynamic";
+
 
 export const metadata: Metadata = {
     title: 'Software Ecosystem | Code Swayam',

@@ -2,6 +2,8 @@ import Link from 'next/link';
 import { cmsClient } from '@/lib/cms/sanity';
 import type { Metadata } from 'next';
 import { ArrowRight, Search } from 'lucide-react';
+export const dynamic = "force-dynamic";
+
 
 export const metadata: Metadata = {
     title: 'Insights | Code Swayam',

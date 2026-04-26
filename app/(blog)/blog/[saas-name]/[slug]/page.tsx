@@ -3,6 +3,7 @@ import { cmsClient } from '@/lib/cms/sanity';
 import Link from 'next/link';
 import type { Metadata } from 'next';
 import { ArrowLeft, Clock, Share2, ArrowRight } from 'lucide-react';
+export const dynamic = "force-dynamic";
 
 interface BlogPostProps {
     params: Promise<{
