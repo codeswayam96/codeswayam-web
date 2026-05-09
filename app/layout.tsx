@@ -15,7 +15,6 @@ const instrumentSans = Instrument_Sans({
 import { GlobalNavbar } from "@/components/GlobalNavbar";
 import { GlobalFooter } from "@/components/GlobalFooter";
 import { Analytics } from "@codeswayam/analytics";
-import { NeuralProvider } from "@codeswayam/neural/react";
 import { constructMetadata } from "@/lib/seo";
 
 export const metadata: Metadata = constructMetadata();
@@ -39,16 +38,12 @@ export default function RootLayout({
           clarityId={process.env.NEXT_PUBLIC_CLARITY_ID}
           appName="codeswayam-web"
         />
-        <NeuralProvider config={{ 
-          apiKey: process.env.NEXT_PUBLIC_NEURAL_API_KEY!, 
-          baseUrl: process.env.NEXT_PUBLIC_NEURAL_API_URL 
-        }}>
+
           <GlobalNavbar />
           <main className="flex-1">
             {children}
           </main>
           <GlobalFooter />
-        </NeuralProvider>
       </body>
     </html>
   );
