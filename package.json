@@ -9,6 +9,11 @@
     "lint": "next lint"
   },
   "dependencies": {
+    "@codeswayam/analytics": "^0.1.1",
+    "@codeswayam/api-client": "^1.2.5",
+    "@codeswayam/auth": "^2.3.0",
+    "@codeswayam/neural": "^1.0.0",
+    "@codeswayam/ui": "^1.1.0",
     "@hookform/resolvers": "^3.9.0",
     "axios": "^1.13.6",
     "class-variance-authority": "^0.7.1",
