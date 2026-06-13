@@ -3,13 +3,18 @@
 import Link from 'next/link';
 import { useState, useEffect } from 'react';
 import { Menu, X, ArrowRight } from 'lucide-react';
+import { useCSWUser, logout, clearToken } from '@codeswayam/auth';
 
 export function GlobalNavbar() {
     const [menuOpen, setMenuOpen] = useState(false);
     const [scrolled, setScrolled] = useState(false);
     const [currentUrl, setCurrentUrl] = useState('');
+    const [mounted, setMounted] = useState(false);
+
+    const { isSignedIn, isLoaded } = useCSWUser();
 
     useEffect(() => {
+        setMounted(true);
         setCurrentUrl(window.location.href);
         const handleScroll = () => {
             setScrolled(window.scrollY > 20);
@@ -19,9 +24,15 @@ export function GlobalNavbar() {
     }, []);
 
     const getAuthUrl = (path: string) => {
-        const baseUrl = process.env.NEXT_PUBLIC_APP_AUTH_URL || 'http://localhost:3002';
+        const baseUrl = process.env.NEXT_PUBLIC_APP_AUTH_URL || 'http://localhost:3003';
         if (!currentUrl) return `${baseUrl}${path}`;
         return `${baseUrl}${path}?redirect=${encodeURIComponent(currentUrl)}`;
+    };
+
+    const handleLogout = async () => {
+        await logout();
+        clearToken();
+        window.location.href = '/';
     };
 
     return (
@@ -52,19 +63,40 @@ export function GlobalNavbar() {
                     <div className="h-4 w-px bg-border mx-2" />
 
                     <div className="flex items-center gap-4">
-                        <Link
-                            href={getAuthUrl('/login')}
-                            className="text-[12px] font-bold uppercase tracking-widest text-foreground hover:text-primary transition-colors"
-                        >
-                            Log In
-                        </Link>
-                        <Link
-                            href={getAuthUrl('/signup')}
-                            className="group flex items-center gap-2 bg-primary text-primary-foreground px-6 py-2.5 rounded-full text-[12px] font-black uppercase tracking-widest transition-all hover:brightness-110 active:scale-95"
-                        >
-                            Get Started
-                            <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
-                        </Link>
+                        {!mounted || !isLoaded ? (
+                            <div className="w-20" />
+                        ) : isSignedIn ? (
+                            <>
+                                <Link
+                                    href="/dashboard"
+                                    className="text-[12px] font-bold uppercase tracking-widest text-foreground hover:text-primary transition-colors"
+                                >
+                                    Dashboard
+                                </Link>
+                                <button
+                                    onClick={handleLogout}
+                                    className="text-[12px] font-bold uppercase tracking-widest text-muted-foreground hover:text-rose-600 transition-colors cursor-pointer border-none bg-transparent"
+                                >
+                                    Log Out
+                                </button>
+                            </>
+                        ) : (
+                            <>
+                                <Link
+                                    href={getAuthUrl('/login')}
+                                    className="text-[12px] font-bold uppercase tracking-widest text-foreground hover:text-primary transition-colors"
+                                >
+                                    Log In
+                                </Link>
+                                <Link
+                                    href={getAuthUrl('/signup')}
+                                    className="group flex items-center gap-2 bg-primary text-primary-foreground px-6 py-2.5 rounded-full text-[12px] font-black uppercase tracking-widest transition-all hover:brightness-110 active:scale-95"
+                                >
+                                    Get Started
+                                    <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
+                                </Link>
+                            </>
+                        )}
                     </div>
                 </div>
 
@@ -79,7 +111,7 @@ export function GlobalNavbar() {
             </nav>
 
             {/* Mobile drawer */}
-            <div 
+            <div
                 className={`
                     md:hidden absolute top-24 left-6 right-6 p-8 glass rounded-[2rem] border border-black/5 dark:border-white/10 transition-all duration-300
                     ${menuOpen ? 'opacity-100 translate-y-0 pointer-events-auto' : 'opacity-0 -translate-y-4 pointer-events-none'}
@@ -89,12 +121,24 @@ export function GlobalNavbar() {
                     <Link href="/services" onClick={() => setMenuOpen(false)} className="py-2 border-b border-black/5 dark:border-white/5">Services</Link>
                     <Link href="/products" onClick={() => setMenuOpen(false)} className="py-2 border-b border-black/5 dark:border-white/5">SaaS</Link>
                     <Link href="/blog" onClick={() => setMenuOpen(false)} className="py-2 border-b border-black/5 dark:border-white/5">Blog</Link>
-                    <div className="flex flex-col gap-4 pt-4">
-                        <Link href={getAuthUrl('/login')} className="py-2">Log In</Link>
-                        <Link href={getAuthUrl('/signup')} className="flex items-center justify-center gap-2 bg-black dark:bg-white text-white dark:text-black py-4 rounded-2xl font-black">
-                            Get Started
-                            <ArrowRight className="w-5 h-5" />
-                        </Link>
+                    
+                    <div className="flex flex-col gap-4 pt-4 border-t border-black/5 dark:border-white/5">
+                        {!mounted || !isLoaded ? (
+                            <div className="h-10" />
+                        ) : isSignedIn ? (
+                            <>
+                                <Link href="/dashboard" onClick={() => setMenuOpen(false)} className="py-2 text-[12px] font-bold uppercase tracking-widest">Dashboard</Link>
+                                <button onClick={() => { setMenuOpen(false); handleLogout(); }} className="py-2 text-[12px] font-bold uppercase tracking-widest text-left text-muted-foreground hover:text-rose-600 border-none bg-transparent">Log Out</button>
+                            </>
+                        ) : (
+                            <>
+                                <Link href={getAuthUrl('/login')} className="py-2">Log In</Link>
+                                <Link href={getAuthUrl('/signup')} className="flex items-center justify-center gap-2 bg-black dark:bg-white text-white dark:text-black py-4 rounded-2xl font-black">
+                                    Get Started
+                                    <ArrowRight className="w-5 h-5" />
+                                </Link>
+                            </>
+                        )}
                     </div>
                 </div>
             </div>

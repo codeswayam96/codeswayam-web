@@ -17,22 +17,35 @@ export function constructMetadata({
     image = siteConfig.ogImage,
     icons = '/favicon.ico',
     noIndex = false,
+    keywords = ['Code Swayam', 'SaaS platform', 'software development', 'AI agents', 'NestJS API', 'Next.js application'],
+    canonical,
 }: {
     title?: string;
     description?: string;
     image?: string;
     icons?: string;
     noIndex?: boolean;
+    keywords?: string | string[];
+    canonical?: string;
 } = {}): Metadata {
+    const resolvedCanonical = canonical ? `${siteConfig.url}${canonical}` : undefined;
+
     return {
         title,
         description,
+        keywords: Array.isArray(keywords) ? keywords.join(', ') : keywords,
         openGraph: {
             title,
             description,
+            type: 'website',
+            locale: 'en_US',
+            siteName: siteConfig.name,
             images: [
                 {
                     url: image,
+                    width: 1200,
+                    height: 630,
+                    alt: title,
                 },
             ],
         },
@@ -45,11 +58,11 @@ export function constructMetadata({
         },
         icons,
         metadataBase: new URL(siteConfig.url),
-        ...(noIndex && {
-            robots: {
-                index: false,
-                follow: false,
-            },
-        }),
+        alternates: resolvedCanonical ? {
+            canonical: resolvedCanonical,
+        } : undefined,
+        robots: noIndex 
+            ? { index: false, follow: false }
+            : { index: true, follow: true, googleBot: { index: true, follow: true } },
     };
 }

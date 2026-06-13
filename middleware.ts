@@ -7,7 +7,7 @@ import { withCSWAuth } from "@codeswayam/auth/middleware";
  * /dashboard and /admin require authentication.
  */
 export default withCSWAuth({
-    ssoUrl:       process.env.NEXT_PUBLIC_APP_AUTH_URL || process.env.NEXT_PUBLIC_AUTH_URL,
+    ssoUrl: process.env.NEXT_PUBLIC_APP_AUTH_URL || process.env.NEXT_PUBLIC_AUTH_URL,
     callbackPath: "/auth/callback",
     publicPaths: [
         "/",
@@ -17,6 +17,8 @@ export default withCSWAuth({
         "/contact",
         "/login",       // legacy path — the real login is on codeswayam-auth
         "/api",
+        "/products",
+        "/services",
     ],
 });
 

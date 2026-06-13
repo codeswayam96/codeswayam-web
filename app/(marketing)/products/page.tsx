@@ -2,13 +2,16 @@ import type { Metadata } from 'next';
 import { getSaasProducts } from '@/lib/data';
 import { ArrowUpRight, Zap, Globe, Shield, Sparkles } from 'lucide-react';
 import Link from 'next/link';
+import { constructMetadata } from '@/lib/seo';
 export const dynamic = "force-dynamic";
 
 
-export const metadata: Metadata = {
+export const metadata: Metadata = constructMetadata({
     title: 'Software Ecosystem | Code Swayam',
     description: 'Explore our portfolio of high-performance SaaS applications and digital growth tools.',
-};
+    keywords: ['SaaS products', 'LinkedIn automation', 'Conversational AI', 'CRM tools', 'CodeSwayam software ecosystem'],
+    canonical: '/products',
+});
 
 export default async function ProductsPage() {
     const allProducts = await getSaasProducts();

@@ -1,22 +1,47 @@
 import type { Metadata } from 'next';
 import Link from 'next/link';
 import { ArrowRight, Code, Cpu, Database, Layout, Shield, Zap } from 'lucide-react';
+import { constructMetadata } from '@/lib/seo';
 
-export const metadata: Metadata = {
+export const metadata: Metadata = constructMetadata({
     title: 'Expert Engineering Services | Code Swayam',
-    description: 'Bespoke software development, cloud infrastructure, and AI integration services for ambitious teams.',
-};
+    description: 'Bespoke software development, cloud infrastructure, and AI integration services for ambitious startups.',
+    keywords: ['SaaS Engineering', 'Interface Design', 'AI Integration', 'Backend Systems', 'Identity & Auth', 'Cloud Infrastructure'],
+    canonical: '/services',
+});
 
-const services = [
-    { icon: Layout, title: 'Interface Design', desc: 'High-end editorial UI/UX that converts visitors into customers through precise typography and grid systems.' },
-    { icon: Code, title: 'SaaS Engineering', desc: 'Scalable multi-tenant architectures built with Next.js, optimizing for performance and global reach.' },
-    { icon: Cpu, title: 'AI Integration', desc: 'Custom LLM orchestration and AI agents designed to automate complex business workflows.' },
-    { icon: Database, title: 'Backend Systems', desc: 'Robust NestJS APIs and microservices designed for high-availability and extreme reliability.' },
-    { icon: Shield, title: 'Identity & Auth', desc: 'Enterprise-grade SSO systems and cross-domain authentication flows for product ecosystems.' },
-    { icon: Zap, title: 'Infrastructure', desc: 'Automated CI/CD pipelines and cloud orchestration on AWS, GCP, and edge platforms.' },
+const iconMap: Record<string, any> = { Layout, Code, Cpu, Database, Shield, Zap };
+
+const DEFAULT_SERVICES = [
+    { icon: 'Layout', title: 'Interface Design', desc: 'High-end editorial UI/UX that converts visitors into customers through precise typography and grid systems.' },
+    { icon: 'Code', title: 'SaaS Engineering', desc: 'Scalable multi-tenant architectures built with Next.js, optimizing for performance and global reach.' },
+    { icon: 'Cpu', title: 'AI Integration', desc: 'Custom LLM orchestration and AI agents designed to automate complex business workflows.' },
+    { icon: 'Database', title: 'Backend Systems', desc: 'Robust NestJS APIs and microservices designed for high-availability and extreme reliability.' },
+    { icon: 'Shield', title: 'Identity & Auth', desc: 'Enterprise-grade SSO systems and cross-domain authentication flows for product ecosystems.' },
+    { icon: 'Zap', title: 'Infrastructure', desc: 'Automated CI/CD pipelines and cloud orchestration on AWS, GCP, and edge platforms.' },
 ];
 
-export default function ServicesPage() {
+export default async function ServicesPage() {
+    let services = DEFAULT_SERVICES;
+    try {
+        const apiUrl = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:3000';
+        const res = await fetch(`${apiUrl}/services`, {
+            next: { revalidate: 60 } // Cache catalog for 1 minute
+        });
+        if (res.ok) {
+            const data = await res.json();
+            if (data && Array.isArray(data) && data.length > 0) {
+                services = data.filter(item => item.isActive).map(item => ({
+                    icon: item.icon || 'Code',
+                    title: item.name,
+                    desc: item.description
+                }));
+            }
+        }
+    } catch (e) {
+        console.error("Failed to fetch dynamic services, using defaults:", e);
+    }
+
     return (
         <div className="bg-background text-foreground selection:bg-primary/20 selection:text-primary pt-32 pb-24">
             {/* 1. EDITORIAL HERO */}
@@ -51,19 +76,22 @@ export default function ServicesPage() {
             <section className="px-6 py-24 bg-secondary/30 border-y border-border">
                 <div className="max-w-7xl mx-auto">
                     <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-x-12 gap-y-24">
-                        {services.map((s, i) => (
-                            <div key={i} className="group">
-                                <div className="w-16 h-16 rounded-2xl bg-primary/10 flex items-center justify-center text-primary mb-8 group-hover:bg-primary group-hover:text-primary-foreground transition-all duration-500">
-                                    <s.icon className="w-8 h-8" />
+                        {services.map((s, i) => {
+                            const IconComponent = iconMap[s.icon] || Code;
+                            return (
+                                <div key={i} className="group">
+                                    <div className="w-16 h-16 rounded-2xl bg-primary/10 flex items-center justify-center text-primary mb-8 group-hover:bg-primary group-hover:text-primary-foreground transition-all duration-500">
+                                        <IconComponent className="w-8 h-8" />
+                                    </div>
+                                    <h3 className="text-3xl font-display font-bold tracking-tight mb-6">
+                                        {s.title}
+                                    </h3>
+                                    <p className="text-lg font-medium text-muted-foreground leading-tight">
+                                        {s.desc}
+                                    </p>
                                 </div>
-                                <h3 className="text-3xl font-display font-bold tracking-tight mb-6">
-                                    {s.title}
-                                </h3>
-                                <p className="text-lg font-medium text-muted-foreground leading-tight">
-                                    {s.desc}
-                                </p>
-                            </div>
-                        ))}
+                            );
+                        })}
                     </div>
                 </div>
             </section>

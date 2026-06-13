@@ -16,6 +16,7 @@ import { GlobalNavbar } from "@/components/GlobalNavbar";
 import { GlobalFooter } from "@/components/GlobalFooter";
 import { Analytics } from "@codeswayam/analytics";
 import { constructMetadata } from "@/lib/seo";
+import { CSWProvider } from "@codeswayam/auth";
 
 export const metadata: Metadata = constructMetadata();
 
@@ -29,21 +30,26 @@ export default function RootLayout({
       <body
         className={`${inter.variable} ${instrumentSans.variable} antialiased min-h-screen flex flex-col font-sans`}
       >
-        <Analytics
-          gtmId={process.env.NEXT_PUBLIC_GTM_ID}
-          ga4Id={process.env.NEXT_PUBLIC_GA4_ID}
-          metaPixelId={process.env.NEXT_PUBLIC_META_PIXEL_ID}
-          gscVerification={process.env.NEXT_PUBLIC_GSC_VERIFICATION}
-          hotjarId={process.env.NEXT_PUBLIC_HOTJAR_ID}
-          clarityId={process.env.NEXT_PUBLIC_CLARITY_ID}
-          appName="codeswayam-web"
-        />
+        <CSWProvider
+          apiUrl={process.env.NEXT_PUBLIC_API_URL || "http://localhost:3000"}
+          ssoUrl={process.env.NEXT_PUBLIC_APP_AUTH_URL || "http://localhost:3003"}
+        >
+          <Analytics
+            gtmId={process.env.NEXT_PUBLIC_GTM_ID}
+            ga4Id={process.env.NEXT_PUBLIC_GA4_ID}
+            metaPixelId={process.env.NEXT_PUBLIC_META_PIXEL_ID}
+            gscVerification={process.env.NEXT_PUBLIC_GSC_VERIFICATION}
+            hotjarId={process.env.NEXT_PUBLIC_HOTJAR_ID}
+            clarityId={process.env.NEXT_PUBLIC_CLARITY_ID}
+            appName="codeswayam-web"
+          />
 
           <GlobalNavbar />
           <main className="flex-1">
             {children}
           </main>
           <GlobalFooter />
+        </CSWProvider>
       </body>
     </html>
   );
