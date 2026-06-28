@@ -2,13 +2,48 @@ import type { Metadata } from 'next';
 import Link from 'next/link';
 import { ArrowRight, Code, Cpu, Database, Layout, Shield, Zap } from 'lucide-react';
 import { constructMetadata } from '@/lib/seo';
+import {
+    buildJsonLd,
+    serializeJsonLd,
+    breadcrumbSchema,
+    webPageSchema,
+    professionalServiceSchema,
+} from '@/lib/json-ld';
 
 export const metadata: Metadata = constructMetadata({
-    title: 'Expert Engineering Services | Code Swayam',
-    description: 'Bespoke software development, cloud infrastructure, and AI integration services for ambitious startups.',
-    keywords: ['SaaS Engineering', 'Interface Design', 'AI Integration', 'Backend Systems', 'Identity & Auth', 'Cloud Infrastructure'],
+    title: 'SaaS Engineering & AI Integration Services | Code Swayam',
+    description:
+        'Hire Code Swayam for bespoke SaaS engineering, AI integration, UI/UX design, and cloud infrastructure. We build scalable, high-performance systems for ambitious startups worldwide.',
+    keywords: [
+        'SaaS engineering services',
+        'AI integration agency',
+        'custom software development',
+        'Next.js development agency',
+        'NestJS backend services',
+        'hire software engineers India',
+        'UI UX design agency',
+        'cloud infrastructure services',
+        'startup software agency',
+        'Interface Design',
+    ],
     canonical: '/services',
 });
+
+const pageUrl = 'https://codeswayam.com/services';
+const breadcrumb = breadcrumbSchema([{ name: 'Services', url: pageUrl }], pageUrl);
+const jsonLd = buildJsonLd(
+    webPageSchema({
+        url: pageUrl,
+        title: 'SaaS Engineering & AI Integration Services | Code Swayam',
+        description:
+            'Hire Code Swayam for bespoke SaaS engineering, AI integration, UI/UX design, and cloud infrastructure.',
+        datePublished: '2022-01-01',
+        breadcrumb,
+    }),
+    breadcrumb,
+    professionalServiceSchema(),
+);
+
 
 const iconMap: Record<string, any> = { Layout, Code, Cpu, Database, Shield, Zap };
 
@@ -31,7 +66,7 @@ export default async function ServicesPage() {
         if (res.ok) {
             const data = await res.json();
             if (data && Array.isArray(data) && data.length > 0) {
-                services = data.filter(item => item.isActive).map(item => ({
+                services = data.filter((item: any) => item.isActive).map((item: any) => ({
                     icon: item.icon || 'Code',
                     title: item.name,
                     desc: item.description
@@ -44,7 +79,11 @@ export default async function ServicesPage() {
 
     return (
         <div className="bg-background text-foreground selection:bg-primary/20 selection:text-primary pt-32 pb-24">
-            {/* 1. EDITORIAL HERO */}
+            {/* ── JSON-LD: BreadcrumbList + WebPage + ProfessionalService ── */}
+            <script
+                type="application/ld+json"
+                dangerouslySetInnerHTML={{ __html: serializeJsonLd(jsonLd) }}
+            />
             <section className="px-6 mb-24 md:mb-40">
                 <div className="max-w-7xl mx-auto text-center">
                     <div className="flex justify-center mb-10 animate-reveal">

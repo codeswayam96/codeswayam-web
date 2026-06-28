@@ -1,0 +1,43 @@
+{
+  "name": "Code Swayam",
+  "short_name": "CodeSwayam",
+  "description": "Premium SaaS engineering and AI tools by Code Swayam. Build, automate, and scale your digital products.",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#ffffff",
+  "theme_color": "#000000",
+  "orientation": "portrait-primary",
+  "lang": "en-US",
+  "scope": "/",
+  "categories": ["business", "productivity", "developer tools"],
+  "icons": [
+    {
+      "src": "/favicon.ico",
+      "sizes": "any",
+      "type": "image/x-icon",
+      "purpose": "any maskable"
+    }
+  ],
+  "shortcuts": [
+    {
+      "name": "Explore Products",
+      "short_name": "Products",
+      "description": "Browse Code Swayam SaaS products",
+      "url": "/products"
+    },
+    {
+      "name": "Our Services",
+      "short_name": "Services",
+      "description": "Hire Code Swayam for engineering services",
+      "url": "/services"
+    },
+    {
+      "name": "Blog & Insights",
+      "short_name": "Blog",
+      "description": "Engineering, growth, and strategy articles",
+      "url": "/blog"
+    }
+  ],
+  "related_applications": [],
+  "prefer_related_applications": false
+}

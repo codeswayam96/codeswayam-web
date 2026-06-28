@@ -1,14 +1,43 @@
 import { constructMetadata } from "@/lib/seo";
+import { buildJsonLd, serializeJsonLd, breadcrumbSchema, webPageSchema } from "@/lib/json-ld";
 import { Sparkles, Users, Zap } from "lucide-react";
 
 export const metadata = constructMetadata({
-    title: "Our Mission | Code Swayam",
-    description: "Learn more about the team and mission behind Code Swayam.",
+    title: "About Code Swayam — Our Mission & Story",
+    description:
+        "Learn about Code Swayam — the team, mission, and philosophy behind India's premium SaaS engineering ecosystem. 20+ products. 10k+ active users. 99.9% uptime.",
+    canonical: '/about',
+    keywords: [
+        'about Code Swayam',
+        'SaaS company India',
+        'software engineering team',
+        'Code Swayam mission',
+        'CodeSwayam story',
+    ],
 });
+
+const pageUrl = 'https://codeswayam.com/about';
+const breadcrumb = breadcrumbSchema([{ name: 'About', url: pageUrl }], pageUrl);
+const jsonLd = buildJsonLd(
+    webPageSchema({
+        url: pageUrl,
+        title: 'About Code Swayam — Our Mission & Story',
+        description: "Learn about Code Swayam — the team, mission, and philosophy behind India's premium SaaS engineering ecosystem.",
+        datePublished: '2022-01-01',
+        breadcrumb,
+    }),
+    breadcrumb,
+);
+
 
 export default function AboutUsPage() {
     return (
         <div className="bg-background text-foreground selection:bg-primary/20 selection:text-primary pt-32 pb-24 min-h-screen">
+            {/* ── JSON-LD: BreadcrumbList + WebPage ── */}
+            <script
+                type="application/ld+json"
+                dangerouslySetInnerHTML={{ __html: serializeJsonLd(jsonLd) }}
+            />
             {/* 1. EDITORIAL HEADER */}
             <section className="px-6 mb-24 md:mb-40 text-center">
                 <div className="max-w-7xl mx-auto">

@@ -1,5 +1,6 @@
 import Link from 'next/link';
-import { ArrowRight, Twitter, Github, Linkedin } from 'lucide-react';
+import { ArrowRight, Twitter, Github, Linkedin, Instagram, Youtube } from 'lucide-react';
+import { SOCIAL_LINKS } from '@/lib/seo';
 
 export function GlobalFooter() {
     return (
@@ -68,15 +69,56 @@ export function GlobalFooter() {
                     </div>
                 </div>
 
-                {/* Bottom Bar */}
                 <div className="mt-32 pt-10 flex flex-col md:flex-row items-center justify-between gap-8 border-t border-background/5">
                     <p className="text-[11px] font-black uppercase tracking-[0.2em] text-background/30">
                         &copy; {new Date().getFullYear()} Code Swayam Inc. Built with &hearts; for the ecosystem.
                     </p>
-                    <div className="flex gap-8">
-                        <a href="#" className="text-background/30 hover:text-primary transition-colors"><Twitter className="w-5 h-5" /></a>
-                        <a href="#" className="text-background/30 hover:text-primary transition-colors"><Linkedin className="w-5 h-5" /></a>
-                        <a href="#" className="text-background/30 hover:text-primary transition-colors"><Github className="w-5 h-5" /></a>
+                    <div className="flex gap-6 items-center">
+                        <a
+                            href={SOCIAL_LINKS.twitter}
+                            target="_blank"
+                            rel="noopener noreferrer me"
+                            aria-label="Code Swayam on X (Twitter)"
+                            className="text-background/30 hover:text-primary transition-colors"
+                        >
+                            <Twitter className="w-5 h-5" />
+                        </a>
+                        <a
+                            href={SOCIAL_LINKS.instagram}
+                            target="_blank"
+                            rel="noopener noreferrer me"
+                            aria-label="Code Swayam on Instagram"
+                            className="text-background/30 hover:text-primary transition-colors"
+                        >
+                            <Instagram className="w-5 h-5" />
+                        </a>
+                        <a
+                            href={SOCIAL_LINKS.linkedin}
+                            target="_blank"
+                            rel="noopener noreferrer me"
+                            aria-label="Code Swayam on LinkedIn"
+                            className="text-background/30 hover:text-primary transition-colors"
+                        >
+                            <Linkedin className="w-5 h-5" />
+                        </a>
+                        <a
+                            href={SOCIAL_LINKS.youtube}
+                            target="_blank"
+                            rel="noopener noreferrer me"
+                            aria-label="Code Swayam on YouTube"
+                            className="text-background/30 hover:text-primary transition-colors"
+                        >
+                            <Youtube className="w-5 h-5" />
+                        </a>
+                        <a
+                            href={SOCIAL_LINKS.github}
+                            target="_blank"
+                            rel="noopener noreferrer me"
+                            aria-label="Code Swayam on GitHub"
+                            className="text-background/30 hover:text-primary transition-colors"
+                        >
+                            <Github className="w-5 h-5" />
+                        </a>
                     </div>
                 </div>
             </div>

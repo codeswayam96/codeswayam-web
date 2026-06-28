@@ -5,10 +5,34 @@ import type { Metadata } from 'next';
 import { ArrowRight, Sparkles, Code, Globe, Zap, ArrowUpRight } from 'lucide-react';
 import { constructMetadata } from '@/lib/seo';
 import { getSaasProducts, getBlogPosts } from '@/lib/data';
+import {
+    buildJsonLd,
+    serializeJsonLd,
+    organizationSchema,
+    websiteSchema,
+    webPageSchema,
+    itemListSchema,
+    siteNavigationSchema,
+    blogSchema,
+} from '@/lib/json-ld';
 
 export const metadata: Metadata = constructMetadata({
-    title: 'Code Swayam — Premium SaaS Engineering',
-    description: 'The Ultimate Ecosystem for Digital Growth & Development. We build high-performance software for the modern era.',
+    title: 'Code Swayam — Premium SaaS Engineering & AI Tools',
+    description:
+        'Code Swayam is a premium SaaS engineering company. We build AI-powered tools, high-performance SaaS platforms, and custom software for ambitious startups. Explore Auraflow, ChatLift, and more.',
+    canonical: '/',
+    keywords: [
+        'Code Swayam',
+        'SaaS engineering company',
+        'AI-powered SaaS tools',
+        'custom software development India',
+        'Next.js SaaS platform',
+        'LinkedIn automation AI',
+        'Auraflow LinkedIn tool',
+        'startup software development',
+        'full stack engineering agency',
+        'NestJS backend development',
+    ],
 });
 
 export default async function HomePage() {
@@ -35,21 +59,45 @@ export default async function HomePage() {
         return a.name.localeCompare(b.name);
     });
 
+    // Build ItemList from live products (max 8)
+    const productListItems = saasProducts.slice(0, 8).map((p: any, i: number) => ({
+        name: p.name,
+        url: p.domain ? `https://${p.domain}` : `https://codeswayam.com/products`,
+        description: p.description,
+        position: i + 1,
+    }));
+
+    const jsonLd = buildJsonLd(
+        organizationSchema(),
+        websiteSchema(),
+        webPageSchema({
+            url: 'https://codeswayam.com',
+            title: 'Code Swayam — Premium SaaS Engineering & AI Tools',
+            description:
+                'Code Swayam is a premium SaaS engineering company building AI-powered tools and high-performance software for ambitious startups.',
+            datePublished: '2022-01-01',
+            dateModified: new Date().toISOString().slice(0, 10),
+        }),
+        itemListSchema(productListItems),
+        // Declare all site pages so Google knows the full navigation structure
+        ...siteNavigationSchema(),
+        // Blog entity — links the 3 featured posts shown on the homepage
+        blogSchema(
+            blogPosts.slice(0, 3).map((post) => ({
+                title: post.title,
+                url: `https://codeswayam.com/blog/${(post.saas || 'engineering').toLowerCase()}/${post.slug}`,
+                description: post.excerpt,
+                datePublished: post.createdAt,
+            }))
+        ),
+    );
+
     return (
         <div className="bg-white text-black selection:bg-black selection:text-white">
-            {/* SEO Schema */}
+            {/* ── JSON-LD Structured Data ── Organization + WebSite + WebPage + ItemList */}
             <script
                 type="application/ld+json"
-                dangerouslySetInnerHTML={{
-                    __html: JSON.stringify({
-                        "@context": "https://schema.org",
-                        "@type": "Organization",
-                        "name": "Code Swayam",
-                        "url": "https://codeswayam.com",
-                        "logo": "https://codeswayam.com/logo.png",
-                        "description": "Premium SaaS engineering and digital growth ecosystem."
-                    })
-                }}
+                dangerouslySetInnerHTML={{ __html: serializeJsonLd(jsonLd) }}
             />
 
             {/* 1. HERO SECTION */}

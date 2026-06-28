@@ -14,8 +14,7 @@ export default withCSWAuth({
         "/blog",
         "/pricing",
         "/about",
-        "/contact",
-        "/login",       // legacy path — the real login is on codeswayam-auth
+        "/contact",    // legacy path — the real login is on codeswayam-auth
         "/api",
         "/products",
         "/services",

@@ -15,10 +15,17 @@ const instrumentSans = Instrument_Sans({
 import { GlobalNavbar } from "@/components/GlobalNavbar";
 import { GlobalFooter } from "@/components/GlobalFooter";
 import { Analytics } from "@codeswayam/analytics";
-import { constructMetadata } from "@/lib/seo";
+import { constructMetadata, SOCIAL_LINKS, siteConfig } from "@/lib/seo";
 import { CSWProvider } from "@codeswayam/auth";
 
-export const metadata: Metadata = constructMetadata();
+export const metadata: Metadata = {
+  ...constructMetadata(),
+  manifest: '/manifest.json',
+  title: {
+    default: 'Code Swayam \u2014 Premium SaaS Engineering & AI Tools',
+    template: '%s | Code Swayam',
+  },
+};
 
 export default function RootLayout({
   children,
@@ -27,6 +34,24 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
+      <head>
+        {/*
+          rel="me" — Social identity verification links.
+          Google, Mastodon, and other crawlers use these to verify that
+          the social profiles listed belong to this domain.
+          All handles are @codeswayam.
+        */}
+        <link rel="me" href={SOCIAL_LINKS.twitter} />
+        <link rel="me" href={SOCIAL_LINKS.instagram} />
+        <link rel="me" href={SOCIAL_LINKS.linkedin} />
+        <link rel="me" href={SOCIAL_LINKS.github} />
+        <link rel="me" href={SOCIAL_LINKS.youtube} />
+        {/* Publisher identity */}
+        <link rel="author" href={`${siteConfig.url}/about`} />
+        {/* Preconnect to Google Fonts for performance */}
+        <link rel="preconnect" href="https://fonts.googleapis.com" />
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
+      </head>
       <body
         className={`${inter.variable} ${instrumentSans.variable} antialiased min-h-screen flex flex-col font-sans`}
       >

@@ -7,34 +7,36 @@
 
 ⚠ The "middleware" file convention is deprecated. Please use "proxy" instead. Learn more: https://nextjs.org/docs/messages/middleware-to-proxy
   Creating an optimized production build ...
-✓ Compiled successfully in 26.2s
+✓ Compiled successfully in 37.7s
   Running TypeScript ...
-  Finished TypeScript in 48s ...
+  Finished TypeScript in 94s ...
   Collecting page data using 7 workers ...
 ⚠ Using edge runtime on a page currently disables static generation for that page
-  Generating static pages using 7 workers (0/16) ...
-  Generating static pages using 7 workers (4/16) 
-  Generating static pages using 7 workers (8/16) 
-  Generating static pages using 7 workers (12/16) 
-✓ Generating static pages using 7 workers (16/16) in 3.0s
+  Generating static pages using 7 workers (0/18) ...
+  Generating static pages using 7 workers (4/18) 
+  Generating static pages using 7 workers (8/18) 
+  Generating static pages using 7 workers (13/18) 
+✓ Generating static pages using 7 workers (18/18) in 9.3s
   Finalizing page optimization ...
 
-Route (app)
+Route (app)                   Revalidate  Expire
 ┌ ƒ /
 ├ ○ /_not-found
 ├ ○ /about
 ├ ƒ /api/og
+├ ○ /auth/callback
 ├ ƒ /blog
 ├ ƒ /blog/[saas-name]/[slug]
 ├ ○ /case-studies
 ├ ○ /contact-us
+├ ○ /dashboard
 ├ ○ /delivery-policy
 ├ ○ /pricing
 ├ ○ /privacy-policy
 ├ ƒ /products
 ├ ○ /refund-policy
 ├ ○ /robots.txt
-├ ○ /services
+├ ○ /services                         1m      1y
 ├ ○ /sitemap.xml
 ├ ○ /team
 ├ ○ /terms-and-conditions
