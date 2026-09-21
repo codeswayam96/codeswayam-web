@@ -36,11 +36,11 @@ export function GlobalNavbar() {
     };
 
     return (
-        <header className="fixed top-0 left-0 right-0 z-50 px-6 py-8 pointer-events-none">
+        <header className={`fixed top-0 left-0 right-0 z-50 px-6 pointer-events-none transition-all duration-300 ${scrolled ? 'py-3' : 'py-6'}`}>
             <nav
                 className={`
-                    max-w-4xl mx-auto w-full pointer-events-auto transition-all duration-500 ease-in-out
-                    flex items-center justify-between px-8 py-4
+                    max-w-5xl mx-auto w-full pointer-events-auto transition-all duration-500 ease-in-out
+                    flex items-center justify-between px-6 md:px-8 py-3.5
                     glass rounded-full premium-shadow border border-black/5 dark:border-white/10
                     ${scrolled ? 'scale-95 translate-y-[-10px]' : 'scale-100'}
                 `}
@@ -53,29 +53,30 @@ export function GlobalNavbar() {
                 </Link>
 
                 {/* Desktop Nav */}
-                <div className="hidden md:flex items-center gap-8">
-                    <div className="flex items-center gap-8 text-[12px] font-bold uppercase tracking-widest text-muted-foreground">
-                        <Link href="/services" className="hover:text-primary transition-colors">Services</Link>
-                        <Link href="/products" className="hover:text-primary transition-colors">SaaS</Link>
-                        <Link href="/blog" className="hover:text-primary transition-colors">Blog</Link>
+                <div className="hidden md:flex items-center gap-6">
+                    <div className="flex items-center gap-1.5 text-[12px] font-bold uppercase tracking-wider text-muted-foreground">
+                        <Link href="/services" className="px-3.5 py-1.5 rounded-full hover:bg-muted/60 hover:text-foreground transition-all">Services</Link>
+                        <Link href="/products" className="px-3.5 py-1.5 rounded-full hover:bg-muted/60 hover:text-foreground transition-all">SaaS</Link>
+                        <Link href="/tools" className="px-3.5 py-1.5 rounded-full bg-primary/10 text-primary font-black hover:bg-primary hover:text-primary-foreground transition-all">Tools</Link>
+                        <Link href="/blog" className="px-3.5 py-1.5 rounded-full hover:bg-muted/60 hover:text-foreground transition-all">Blog</Link>
                     </div>
 
-                    <div className="h-4 w-px bg-border mx-2" />
+                    <div className="h-4 w-px bg-border mx-1" />
 
-                    <div className="flex items-center gap-4">
+                    <div className="flex items-center gap-2">
                         {!mounted || !isLoaded ? (
                             <div className="w-20" />
                         ) : isSignedIn ? (
                             <>
                                 <Link
                                     href="/dashboard"
-                                    className="text-[12px] font-bold uppercase tracking-widest text-foreground hover:text-primary transition-colors"
+                                    className="px-4 py-1.5 rounded-full bg-primary/10 text-primary hover:bg-primary hover:text-primary-foreground text-[11px] font-black uppercase tracking-wider transition-all"
                                 >
                                     Dashboard
                                 </Link>
                                 <button
                                     onClick={handleLogout}
-                                    className="text-[12px] font-bold uppercase tracking-widest text-muted-foreground hover:text-rose-600 transition-colors cursor-pointer border-none bg-transparent"
+                                    className="px-3.5 py-1.5 rounded-full text-[11px] font-bold uppercase tracking-wider text-muted-foreground hover:text-destructive hover:bg-destructive/10 transition-all cursor-pointer border-none bg-transparent"
                                 >
                                     Log Out
                                 </button>
@@ -84,16 +85,16 @@ export function GlobalNavbar() {
                             <>
                                 <Link
                                     href={getAuthUrl('/login')}
-                                    className="text-[12px] font-bold uppercase tracking-widest text-foreground hover:text-primary transition-colors"
+                                    className="px-4 py-1.5 rounded-full text-[11px] font-bold uppercase tracking-wider text-foreground hover:text-primary hover:bg-muted/60 transition-all"
                                 >
                                     Log In
                                 </Link>
                                 <Link
                                     href={getAuthUrl('/signup')}
-                                    className="group flex items-center gap-2 bg-primary text-primary-foreground px-6 py-2.5 rounded-full text-[12px] font-black uppercase tracking-widest transition-all hover:brightness-110 active:scale-95"
+                                    className="group flex items-center gap-1.5 bg-primary text-primary-foreground px-5 py-2 rounded-full text-[11px] font-black uppercase tracking-wider transition-all hover:brightness-110 active:scale-95 shadow-sm"
                                 >
                                     Get Started
-                                    <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
+                                    <ArrowRight className="w-3.5 h-3.5 group-hover:translate-x-0.5 transition-transform" />
                                 </Link>
                             </>
                         )}

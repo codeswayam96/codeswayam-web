@@ -145,6 +145,7 @@ The app uses Next.js route groups to co-locate related pages and share layouts w
 | `/pricing` | `(marketing)` | Public | Pricing tiers and plan comparison |
 | `/about` | `(marketing)` | Public | Company story, team, mission |
 | `/products` | `(marketing)` | Public | Product showcase and feature details |
+| `/tools` | `(marketing)` | Public | Central Free Tools Directory — cross-domain links to PixelForge & PDFCraft |
 | `/services` | `(marketing)` | Public | Services and consulting offering |
 | `/blog` | `(blog)` | Public | Blog index — latest posts, categories |
 | `/blog/[slug]` | `(blog)` | Public | Individual blog post with structured data |

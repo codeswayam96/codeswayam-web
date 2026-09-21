@@ -42,12 +42,13 @@ export function GlobalFooter() {
 
                     {/* Links Columns */}
                     <div className="md:col-span-2 md:col-start-6">
-                        <h4 className="text-[11px] font-black uppercase tracking-[0.2em] text-background/40 mb-8">Products</h4>
+                        <h4 className="text-[11px] font-black uppercase tracking-[0.2em] text-background/40 mb-8">Ecosystem & Tools</h4>
                         <ul className="flex flex-col gap-5 text-[12px] font-bold uppercase tracking-widest">
+                            <li><Link href="/tools" className="text-primary font-black hover:underline transition-colors">Free Tools (150+) &rarr;</Link></li>
+                            <li><a href="https://pixelforge.codeswayam.com" className="hover:text-primary transition-colors">PixelForge (Image)</a></li>
+                            <li><a href="https://pdfcraft.codeswayam.com" className="hover:text-primary transition-colors">PDFCraft (PDF Suite)</a></li>
                             <li><a href="https://auraflow.codeswayam.com" className="hover:text-primary transition-colors">Auraflow</a></li>
-                            <li><a href="https://chatlift.codeswayam.com" className="hover:text-primary transition-colors">ChatLift</a></li>
-                            <li><a href="https://mailtracker.codeswayam.com" className="hover:text-primary transition-colors">MailTracker</a></li>
-                            <li><Link href="/products" className="text-background/40 hover:text-primary transition-colors">View All &rarr;</Link></li>
+                            <li><Link href="/products" className="text-background/40 hover:text-primary transition-colors">All SaaS &rarr;</Link></li>
                         </ul>
                     </div>
 
