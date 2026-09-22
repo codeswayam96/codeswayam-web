@@ -12,7 +12,7 @@
     "@codeswayam/analytics": "^0.1.3",
     "@codeswayam/api-client": "^1.3.2",
     "@codeswayam/auth": "^2.6.0",
-    "@codeswayam/neural": "^1.0.4",
+    "@codeswayam/neural": "^1.1.1",
     "@codeswayam/ui": "^1.3.0",
     "@hookform/resolvers": "^3.9.0",
     "@tanstack/react-table": "^8.21.3",
